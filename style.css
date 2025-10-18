@@ -1,0 +1,200 @@
+/* =========================
+   (PL) Zmienne CSS z kolorami, cieniami i akcentami dla motywu
+   ========================= */
+:root{ /* (PL) Pseudo-element: zakres zmiennych globalnych */
+  --bg-1:#05060f; /* (PL) Ciemne tło warstwa 1 */
+  --bg-2:#0a0f1f; /* (PL) Ciemne tło warstwa 2 */
+  --bg-3:#0b1024; /* (PL) Ciemne tło warstwa 3 */
+  --text:#ecf5ff; /* (PL) Główny kolor tekstu (jasny) */
+  --muted:#9fb3c8; /* (PL) Stonowany kolor tekstu pomocniczego */
+  --glass:rgba(255,255,255,0.06); /* (PL) Przezroczysta biel do efektu szkła/siatki */
+  --border:rgba(255,255,255,0.12); /* (PL) Delikatne obramowania */
+  --accent:#3fe0ff; /* (PL) Kolor akcentu cyjan */
+  --accent-2:#7c4dff; /* (PL) Kolor akcentu fiolet */
+  --success:#18d287; /* (PL) Kolor sukcesu (zielony) */
+  --danger:#ff5d7a; /* (PL) Kolor błędu/ostrzeżenia (czerwony) */
+  --shadow:0 10px 30px rgba(0,0,0,0.35); /* (PL) Cień dla kart i elementów */
+}
+
+/* (PL) Włączamy “border-box” żeby padding nie zwiększał szerokości */
+*{box-sizing:border-box}
+
+/* (PL) Upewniamy się, że html i body mają 100% wysokości */
+html,body{height:100%}
+
+/* (PL) Ogólne style ciała strony: tło, font i kolor tekstu */
+body{
+  margin:0; /* (PL) Usunięcie domyślnego marginesu przeglądarki */
+  color:var(--text); /* (PL) Kolor tekstu ustawiony na jasny */
+  background: /* (PL) Złożone tło: radialny glow + gradient w dół */
+    radial-gradient(60% 60% at 50% 35%, rgba(63,224,255,0.10), rgba(124,77,255,0.09) 45%, transparent),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2) 40%, var(--bg-3));
+  font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji","Segoe UI Emoji"; /* (PL) Stos fontów z fallbackami */
+}
+
+/* (PL) Delikatna siatka na całe tło jako pseudo-element po body */
+body::after{
+  content:""; /* (PL) Wymagane, by pseudo-element istniał */
+  position:fixed; inset:0; /* (PL) Pozycjonowanie na cały ekran */
+  pointer-events:none; /* (PL) Nie blokuje interakcji pod spodem */
+  background: /* (PL) Dwie cienkie siatki: pozioma i pionowa */
+    linear-gradient(var(--glass) 1px, transparent 1px),
+    linear-gradient(90deg, var(--glass) 1px, transparent 1px);
+  background-size:60px 60px; /* (PL) Rozmiar kratki */
+  opacity:.25; /* (PL) Przezroczystość siatki */
+}
+
+/* =========================
+   HEADER
+   ========================= */
+.app-header{
+  position:sticky; top:0; z-index:5; /* (PL) Przylepiony do góry nad treścią */
+  display:flex; align-items:center; gap:12px; /* (PL) Elastyczny układ i odstępy */
+  padding:14px 20px; /* (PL) Wewnętrzne odstępy */
+  backdrop-filter: blur(14px); /* (PL) Efekt szkła (rozmycie tła) */
+  background: rgba(10,15,31,0.6); /* (PL) Półprzezroczyste tło nagłówka */
+  border-bottom:1px solid var(--border); /* (PL) Subtelna linia oddzielająca */
+}
+.logo{
+  width:36px; height:36px; /* (PL) Rozmiar “logo” */
+  display:grid; place-items:center; /* (PL) Wyśrodkowanie zawartości */
+  border-radius:12px; /* (PL) Zaokrąglenie narożników */
+  background: linear-gradient(135deg, var(--glass), transparent); /* (PL) Delikatny gradient szkła */
+  box-shadow: inset 0 0 30px rgba(63,224,255,0.3); /* (PL) Poświata do środka */
+}
+.app-header h1{font-size:20px; font-weight:600; letter-spacing:.4px; margin:0} /* (PL) Styl tytułu */
+
+/* =========================
+   LAYOUT
+   ========================= */
+.layout{
+  max-width:1100px; margin:24px auto; padding:0 16px; /* (PL) Szerokość strony i odstępy */
+  display:grid; gap:20px; /* (PL) Grid z odstępami */
+  grid-template-columns: 1fr; /* (PL) Jedna kolumna na mobilu */
+}
+@media(min-width:1100px){
+  .layout{ grid-template-columns: 420px 1fr; } /* (PL) Dwie kolumny na desktopie: lewa węższa */
+}
+
+/* =========================
+   KARTY (sekcje) i typowe elementy
+   ========================= */
+.card{
+  background: rgba(255,255,255,0.06); /* (PL) Półprzezroczyste tło karty */
+  border:1px solid var(--border); /* (PL) Delikatna ramka karty */
+  border-radius:18px; /* (PL) Zaokrąglenie narożników karty */
+  padding:16px; /* (PL) Wewnętrzne odstępy karty */
+  box-shadow: var(--shadow); /* (PL) Cień pod kartą */
+}
+.card h2{margin:6px 2px 12px; font-size:18px} /* (PL) Styl nagłówka w karcie */
+
+/* =========================
+   FORMULARZE
+   ========================= */
+.lbl{display:block; margin:10px 2px 6px; color:var(--muted); font-size:12px; letter-spacing:.3px} /* (PL) Etykiety pól */
+.inp{
+  width:100%; padding:10px 12px; /* (PL) Rozmiar inputów */
+  color:var(--text); /* (PL) Kolor tekstu */
+  background: rgba(255,255,255,0.06); /* (PL) Tło inputa */
+  border:1px solid var(--border); /* (PL) Ramka inputa */
+  border-radius:12px; /* (PL) Zaokrąglenie narożników */
+  outline:none; /* (PL) Usuwamy domyślne obramowanie focusa */
+  transition: border .2s, box-shadow .2s, background .2s; /* (PL) Płynne przejścia efektów */
+}
+.inp:focus{
+  border-color: rgba(63,224,255,0.6); /* (PL) Kolor ramki przy focusie */
+  box-shadow: 0 0 0 4px rgba(63,224,255,0.12); /* (PL) Pierścień focusa */
+  background: rgba(255,255,255,0.08); /* (PL) Delikatna zmiana tła przy focusie */
+}
+textarea.inp{min-height:90px; resize:vertical} /* (PL) Minimalna wysokość i możliwość zmiany wysokości */
+
+.with-icon{position:relative; display:flex; align-items:center} /* (PL) Kontener z ikoną w środku */
+.with-icon .icon{position:absolute; left:10px; opacity:.7} /* (PL) Pozycjonowanie ikony wewnątrz inputa */
+.with-icon .inp{padding-left:32px} /* (PL) Zapas miejsca, by nie nachodzić na ikonę */
+
+.segmented{display:flex; gap:8px} /* (PL) Rząd przycisków wyboru priorytetu */
+.segmented-item{
+  flex:1; padding:10px 12px; font-size:14px; /* (PL) Rozmiar i font guzika */
+  border-radius:12px; border:1px solid var(--border); /* (PL) Ramka i zaokrąglenie */
+  background: rgba(255,255,255,0.06); color:var(--text); /* (PL) Tło i kolor tekstu */
+  cursor:pointer; transition:.2s; /* (PL) Kursor i animacja hover/focus */
+}
+.segmented-item.active,
+.segmented-item:hover{border-color: rgba(63,224,255,0.6); box-shadow: 0 0 0 3px rgba(63,224,255,0.10)} /* (PL) Podświetlenie aktywnego i hover */
+
+.tags-editor{display:grid; gap:8px} /* (PL) Siatka dla edytora tagów */
+.tag-list{display:flex; flex-wrap:wrap; gap:6px} /* (PL) Lista tagów w formie “chipsów” */
+.tag{
+  padding:4px 8px; font-size:12px; /* (PL) Rozmiar pigułki z tagiem */
+  border:1px solid var(--border); border-radius:999px; /* (PL) Ramka i pełne zaokrąglenie */
+  background: rgba(63,224,255,0.10); /* (PL) Kolor tła chipa */
+}
+.tag .x{margin-left:6px; cursor:pointer; opacity:.8} /* (PL) Krzyżyk do usuwania tagu */
+
+.btn{
+  border:1px solid var(--border); /* (PL) Ramka przycisku */
+  background: rgba(255,255,255,0.06); /* (PL) Tło przycisku */
+  color:var(--text); /* (PL) Kolor tekstu na przycisku */
+  padding:8px 12px; /* (PL) Wewnętrzne odstępy */
+  border-radius:12px; /* (PL) Zaokrąglenie narożników */
+  cursor:pointer; /* (PL) Kursor wskazuje na klikalny element */
+  transition:.2s; /* (PL) Płynne przejście efektów */
+}
+.btn:hover{border-color: rgba(63,224,255,0.6); box-shadow: 0 0 0 3px rgba(63,224,255,0.10)} /* (PL) Efekt hover ogólny */
+.btn.primary{border-color: rgba(124,77,255,0.7); box-shadow: 0 0 0 3px rgba(124,77,255,0.10)} /* (PL) Akcent dla przycisku “primary” */
+.btn.success{border-color: rgba(24,210,135,0.7); box-shadow: 0 0 0 3px rgba(24,210,135,0.12)} /* (PL) Akcent zielony “success” */
+.btn.danger{border-color: rgba(255,93,122,0.7); box-shadow: 0 0 0 3px rgba(255,93,122,0.12)} /* (PL) Akcent czerwony “danger” */
+.btn.ghost{background: transparent} /* (PL) Przycisk “ghost” – przezroczyste tło */
+.hidden{display:none} /* (PL) Klasa ukrywająca element */
+.form-actions{display:flex; gap:8px; margin-top:10px} /* (PL) Rząd przycisków formularza */
+.grow{flex:1} /* (PL) Rozszerz element, aby wypełniał dostępne miejsce */
+
+/* =========================
+   TOOLBAR
+   ========================= */
+.toolbar{
+  display:flex; gap:10px; align-items:center; margin-bottom:12px; /* (PL) Pasek narzędzi nad listą zadań */
+}
+
+/* =========================
+   LISTA ZADAŃ I KARTY
+   ========================= */
+.task-list{display:grid; gap:12px} /* (PL) Siatka listy zadań */
+.task-item{
+  border:1px solid var(--border); /* (PL) Ramka karty zadania */
+  border-radius:16px; /* (PL) Zaokrąglenie narożników karty */
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04)); /* (PL) Delikatny gradient tła karty */
+  padding:12px; /* (PL) Wewnętrzne odstępy karty */
+  box-shadow: var(--shadow); /* (PL) Cień karty */
+}
+.task-meta{
+  display:flex; align-items:center; gap:8px; /* (PL) Pasek metadanych u góry karty */
+}
+.task-title{margin:0; font-size:16px; font-weight:600} /* (PL) Styl tytułu zadania */
+.task-desc{margin:8px 0 6px; color:var(--muted)} /* (PL) Styl opisu zadania */
+.task-tags{display:flex; gap:6px; flex-wrap:wrap} /* (PL) Kontener na tagi z łamaniem linii */
+.spacer{flex:1} /* (PL) Wypełniacz rozpychający elementy na boki */
+.due{font-size:12px; color:var(--muted)} /* (PL) Styl informacji o dacie terminu */
+
+.status-badge{
+  width:10px; height:10px; border-radius:50%; /* (PL) Mała kropka ze stanem */
+  background: var(--accent); /* (PL) Kolor bazowy (nadpisywany klasami stanu) */
+  box-shadow: 0 0 10px var(--accent); /* (PL) Poświata kropki */
+}
+.status-todo{ background:#7c8aa5; box-shadow: 0 0 10px #7c8aa5 } /* (PL) Kolor kropki dla Todo */
+.status-progress{ background:#fdbb2d; box-shadow: 0 0 10px #fdbb2d } /* (PL) Kolor kropki dla In Progress */
+.status-done{ background:#18d287; box-shadow: 0 0 10px #18d287 } /* (PL) Kolor kropki dla Done */
+
+.priority-pill{
+  font-size:12px; padding:4px 8px; border-radius:999px; /* (PL) Owalna “pigułka” */
+  border:1px solid var(--border); /* (PL) Ramka pigułki */
+  background: rgba(124,77,255,0.12); /* (PL) Tło bazowe (nadpisywane klasami) */
+}
+.priority-Low{ background: rgba(63,224,255,0.12) } /* (PL) Tło pigułki dla Low */
+.priority-Medium{ background: rgba(124,77,255,0.16) } /* (PL) Tło pigułki dla Medium */
+.priority-High{ background: rgba(255,93,122,0.16) } /* (PL) Tło pigułki dla High */
+
+.task-footer{
+  display:flex; align-items:center; gap:8px; margin-top:6px; /* (PL) Dolna belka karty zadania */
+}
+.actions{display:flex; gap:6px; margin-left:auto} /* (PL) Grupa przycisków akcji po prawej stronie */

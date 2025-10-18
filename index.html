@@ -1,0 +1,135 @@
+<!DOCTYPE html> <!-- (PL) Deklaracja typu dokumentu: HTML5 -->
+<html lang="en"> <!-- (PL) Język zawartości strony ustawiony na angielski -->
+<head> <!-- (PL) Sekcja nagłówkowa dokumentu HTML -->
+  <!-- (PL) Ustawienie kodowania znaków na UTF-8 -->
+  <meta charset="UTF-8" />
+  <!-- (PL) Ustawienie viewportu dla responsywności na urządzeniach mobilnych -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- (PL) Tytuł wyświetlany na karcie przeglądarki -->
+  <title>Nebula Tasks — Futuristic Task Manager</title>
+  <!-- (PL) Podpięcie zewnętrznego arkusza stylów style.css -->
+  <link rel="stylesheet" href="style.css" />
+</head> <!-- (PL) Koniec sekcji nagłówkowej -->
+<body> <!-- (PL) Główna treść strony widoczna dla użytkownika -->
+
+  <!-- (PL) Pasek nagłówka aplikacji z logo, tytułem i przyciskiem resetu -->
+  <header class="app-header"> <!-- (PL) Nagłówek aplikacji z klasą do stylowania -->
+    <div class="logo">✦</div> <!-- (PL) Proste “logo” jako symbol; CSS robi tło i obramowanie -->
+    <h1>Task Manager</h1> <!-- (PL) Tytuł aplikacji wyświetlany użytkownikowi -->
+    <button id="reset-seed" class="btn ghost"> <!-- (PL) Przycisk do przywrócenia przykładowych danych -->
+      Reset sample data <!-- (PL) Tekst przycisku po angielsku -->
+    </button> <!-- (PL) Koniec przycisku -->
+  </header> <!-- (PL) Koniec nagłówka aplikacji -->
+
+  <!-- (PL) Główna siatka: lewy panel (formularz) + prawy panel (lista) -->
+  <main class="layout"> <!-- (PL) Kontener siatki głównej; CSS ustawia grid -->
+    <!-- (PL) Panel formularza do tworzenia/edycji zadania -->
+    <section class="card"> <!-- (PL) Sekcja formularza, “karta” z efektem glassmorphism -->
+      <h2 id="form-title">Create new task</h2> <!-- (PL) Nagłówek formularza; tekst zmienia się w trybie edycji -->
+
+      <label class="lbl">Title</label> <!-- (PL) Etykieta pola tytułu -->
+      <input id="title" class="inp" placeholder="e.g., Implement login screen" /> <!-- (PL) Pole tekstowe tytułu; wymagane logicznie w JS -->
+
+      <label class="lbl">Description</label> <!-- (PL) Etykieta pola opisu -->
+      <textarea id="description" class="inp" placeholder="Add context, acceptance criteria, links, etc."></textarea> <!-- (PL) Pole wielowierszowe na opis -->
+
+      <label class="lbl">Priority</label> <!-- (PL) Etykieta sekcji priorytetu -->
+      <div class="segmented" id="priority-seg"> <!-- (PL) Grupa przycisków “segmented” do wyboru priorytetu -->
+        <button data-val="Low" class="segmented-item">Low</button> <!-- (PL) Opcja Low; data-val = wartość do logiki JS -->
+        <button data-val="Medium" class="segmented-item active">Medium</button> <!-- (PL) Opcja Medium; domyślnie aktywna -->
+        <button data-val="High" class="segmented-item">High</button> <!-- (PL) Opcja High -->
+      </div> <!-- (PL) Koniec grupy segmented -->
+
+      <label class="lbl">Due date</label> <!-- (PL) Etykieta pola daty -->
+      <div class="with-icon"> <!-- (PL) Kontener z ikoną w środku inputa -->
+        <span class="icon">📅</span> <!-- (PL) Ikona kalendarza; czysto wizualne -->
+        <input id="dueDate" class="inp" type="date" /> <!-- (PL) Pole daty; przeglądarka daje selektor daty -->
+      </div> <!-- (PL) Koniec kontenera z ikoną -->
+
+      <label class="lbl">Status</label> <!-- (PL) Etykieta pola statusu -->
+      <select id="status" class="inp"> <!-- (PL) Lista rozwijana statusu zadania -->
+        <option>Todo</option> <!-- (PL) Status “do zrobienia” -->
+        <option>In Progress</option> <!-- (PL) Status “w trakcie” -->
+        <option>Done</option> <!-- (PL) Status “zrobione” -->
+      </select> <!-- (PL) Koniec selecta -->
+
+      <label class="lbl">Tags (press Enter to add)</label> <!-- (PL) Etykieta dla tagów z podpowiedzią jak dodawać -->
+      <div class="tags-editor"> <!-- (PL) Kontener edytora tagów -->
+        <input id="tag-input" class="inp" placeholder="e.g., ui, backend, docs" /> <!-- (PL) Pole wpisywania nowego tagu; Enter dodaje -->
+        <div id="tag-list" class="tag-list"></div> <!-- (PL) Obszar, gdzie pojawią się “chipsy” tagów z draftu -->
+      </div> <!-- (PL) Koniec edytora tagów -->
+
+      <div class="form-actions"> <!-- (PL) Kontener przycisków formularza -->
+        <button id="create-btn" class="btn primary">Add task</button> <!-- (PL) Przycisk dodania nowego zadania -->
+        <button id="save-btn" class="btn success hidden">Save changes</button> <!-- (PL) Przycisk zapisania edycji; domyślnie ukryty -->
+        <button id="cancel-btn" class="btn ghost hidden">Cancel</button> <!-- (PL) Przycisk anulowania edycji; domyślnie ukryty -->
+      </div> <!-- (PL) Koniec akcji formularza -->
+
+      <p class="hint"> <!-- (PL) Krótka notka dla użytkownika -->
+        This is a pure front-end app. Data is saved in your browser (localStorage). <!-- (PL) Informacja o braku backendu i zapisie w localStorage -->
+      </p> <!-- (PL) Koniec notki -->
+    </section> <!-- (PL) Koniec panelu formularza -->
+
+    <!-- (PL) Panel listy zadań z toolbarami (wyszukiwarka/filtry/sortowanie) -->
+    <section class="card"> <!-- (PL) “Karta” z listą zadań -->
+      <h2>Tasks</h2> <!-- (PL) Nagłówek sekcji listy zadań -->
+
+      <div class="toolbar"> <!-- (PL) Pasek narzędzi nad listą -->
+        <div class="with-icon grow"> <!-- (PL) Pole wyszukiwarki z ikoną; “grow” = rozciąga -->
+          <span class="icon">🔎</span> <!-- (PL) Ikona lupy -->
+          <input id="search" class="inp" placeholder="Search title, description, or tags…" /> <!-- (PL) Pole wyszukiwania tekstowego -->
+        </div> <!-- (PL) Koniec pola wyszukiwarki -->
+
+        <select id="status-filter" class="inp"> <!-- (PL) Filtr statusu -->
+          <option>All</option> <!-- (PL) Pokaż wszystkie statusy -->
+          <option>Todo</option> <!-- (PL) Tylko Todo -->
+          <option>In Progress</option> <!-- (PL) Tylko In Progress -->
+          <option>Done</option> <!-- (PL) Tylko Done -->
+        </select> <!-- (PL) Koniec filtra statusu -->
+
+        <select id="priority-filter" class="inp"> <!-- (PL) Filtr priorytetu -->
+          <option>All</option> <!-- (PL) Wszystkie priorytety -->
+          <option>Low</option> <!-- (PL) Tylko Low -->
+          <option>Medium</option> <!-- (PL) Tylko Medium -->
+          <option>High</option> <!-- (PL) Tylko High -->
+        </select> <!-- (PL) Koniec filtra priorytetu -->
+
+        <select id="sort-key" class="inp"> <!-- (PL) Wybór pola sortowania -->
+          <option value="dueDate">Due date</option> <!-- (PL) Sortuj po dacie -->
+          <option value="priority">Priority</option> <!-- (PL) Sortuj po priorytecie -->
+          <option value="status">Status</option> <!-- (PL) Sortuj po statusie -->
+          <option value="title">Title</option> <!-- (PL) Sortuj po tytule -->
+        </select> <!-- (PL) Koniec wyboru sort key -->
+
+        <button id="sort-dir" class="btn ghost" title="Toggle sort direction">▲</button> <!-- (PL) Przełącza kierunek sortowania ▲/▼ -->
+      </div> <!-- (PL) Koniec toolbara -->
+
+      <div id="task-list" class="task-list"></div> <!-- (PL) Kontener, w którym JS wyrenderuje listę zadań -->
+    </section> <!-- (PL) Koniec panelu listy -->
+  </main> <!-- (PL) Koniec głównej siatki -->
+
+  <!-- (PL) Szablon pojedynczego zadania; powiela go JS dla każdego elementu listy -->
+  <template id="task-item-template"> <!-- (PL) Template nie renderuje się sam; to wzorzec -->
+    <article class="task-item"> <!-- (PL) Pojedyncza “karta” zadania -->
+      <div class="task-meta"> <!-- (PL) Pasek z metadanymi zadania na górze karty -->
+        <span class="status-badge"></span> <!-- (PL) Kolorowa kropka stanu (Todo/Progress/Done) -->
+        <h3 class="task-title"></h3> <!-- (PL) Tytuł zadania wypełniany przez JS -->
+        <div class="task-tags"></div> <!-- (PL) Kontener na tagi zadania -->
+        <div class="spacer"></div> <!-- (PL) Elastyczny odstęp, żeby “Due” wskoczyło na prawo -->
+        <span class="due"></span> <!-- (PL) Miejsce na datę terminu (Due) -->
+      </div> <!-- (PL) Koniec task-meta -->
+      <p class="task-desc"></p> <!-- (PL) Paragraf opisu zadania -->
+      <div class="task-footer"> <!-- (PL) Dolna belka karty -->
+        <span class="priority-pill"></span> <!-- (PL) “Pigułka” z priorytetem (Low/Medium/High) -->
+        <div class="actions"> <!-- (PL) Grupa przycisków akcji dla zadania -->
+          <button class="btn ghost toggle-status" title="Cycle status">⟳</button> <!-- (PL) Zmień status: Todo → In Progress → Done -->
+          <button class="btn ghost edit" title="Edit">✎</button> <!-- (PL) Włącz edycję -->
+          <button class="btn danger delete" title="Delete">🗑</button> <!-- (PL) Usuń zadanie -->
+        </div> <!-- (PL) Koniec akcji -->
+      </div> <!-- (PL) Koniec footera -->
+    </article> <!-- (PL) Koniec pojedynczej karty zadania -->
+  </template> <!-- (PL) Koniec template -->
+
+  <script src="app.js"></script> <!-- (PL) Podpięcie logiki aplikacji z pliku JS -->
+</body> <!-- (PL) Koniec ciała strony -->
+</html> <!-- (PL) Koniec dokumentu HTML -->
